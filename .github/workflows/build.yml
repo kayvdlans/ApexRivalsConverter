@@ -28,7 +28,7 @@ jobs:
         run: dotnet build AMS2ToApexRivals.sln --configuration Release --no-restore
   
       - name: Publish (Optional)
-        run: dotnet publish AMS2ToApexRivals.csproj --configuration Release --output ./publish
+        run: dotnet publish AMS2TARApp.csproj --configuration Release --output ./publish
      
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v3
