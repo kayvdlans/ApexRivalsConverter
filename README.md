@@ -7,3 +7,5 @@ Just drag and drop an xml file, simple as that.
 
 Note:
 Only works on windows (WPF App)
+
+[![Build](https://github.com/kayvdlans/ApexRivalsConverter/actions/workflows/build.yml/badge.svg)](https://github.com/kayvdlans/ApexRivalsConverter/actions/workflows/build.yml)
