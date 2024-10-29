@@ -1,4 +1,4 @@
-# ApexRivalsConverter 
+# ApexRivalsConverter [![Main](https://github.com/kayvdlans/ApexRivalsConverter/actions/workflows/main.yml/badge.svg)](https://github.com/kayvdlans/ApexRivalsConverter/actions/workflows/main.yml)
 Simple converter for AMS2 AI driver files so they can be used in the ApexRivals app.
 
 Just drag and drop an xml file, simple as that.
