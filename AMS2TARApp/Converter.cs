@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text.Json;
 using System.Xml.Linq;
 
@@ -14,8 +15,8 @@ public class Converter(string inputPath, string outputDir, string defaultValue =
 		var root = XElement.Load(inputPath);
 		foreach (var driver in root.Elements("driver")) 
 		{ 
-			var name = driver.Element("name")?.Value ?? "Unknown";
-            var country = driver.Element("country")?.Value ?? "Unknown";
+			var name = driver.Element("name")?.Value ?? "Error";
+            var country = driver.Element("country")?.Value ?? "Random";
 
 			var ams2 = new 
 			{

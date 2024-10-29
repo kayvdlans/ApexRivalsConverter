@@ -1,0 +1,132 @@
+﻿<Window x:Class="AMS2ToApexRivals.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="AMS2 To ApexRivals Converter" Height="750" Width="1000"
+        ResizeMode="NoResize">
+     <Grid Background="{DynamicResource MaterialDesignPaper}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,20,0,10" 
+                    HorizontalAlignment="Center">
+            <TextBlock Text="AMS2 To ApexRivals Converter" 
+                       FontSize="24" 
+                       FontWeight="Bold" 
+                       Foreground="{DynamicResource MaterialDesignBody}"
+                       />
+        </StackPanel>
+        
+        <!-- Main Content Area -->
+        <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0">
+        
+            <!-- Drag-and-Drop Area -->
+            <Border
+                    CornerRadius="8" 
+                    BorderThickness="2" 
+                    BorderBrush="{DynamicResource MaterialDesignDivider}"
+                    Background="{DynamicResource MaterialDesignBackground}"
+                    AllowDrop="True"
+                    Padding="20"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Width="900" Height="200"
+                    DragEnter="Border_DragEnter"
+                    DragLeave="Border_DragLeave"
+                    Drop="Border_Drop">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesignDivider}"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesignPrimary}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <materialDesign:PackIcon Kind="CodeBlockXml" 
+                                             Width="48" 
+                                             Height="48" 
+                                             Foreground="{DynamicResource MaterialDesignSecondary}" 
+                                             HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="DropText" 
+                               Text="Drag and drop your XML file here"
+                               FontSize="16" 
+                               FontWeight="Medium" 
+                               Foreground="{DynamicResource MaterialDesignBody}"
+                               Margin="10,10,10,0"
+                               TextAlignment="Center"/>
+                </StackPanel>
+            </Border>
+            
+            <!-- Preview Area -->
+            <materialDesign:Card x:Name="PreviewCard"
+                                 Margin="0,20,0,0" 
+                                 Padding="16" 
+                                 Background="{DynamicResource MaterialDesignCardBackground}" 
+                                 Visibility="Collapsed"
+                                 Width="900">
+                <StackPanel>
+                    <TextBlock Text="Files to be Created:" 
+                               FontSize="20" 
+                               FontWeight="SemiBold" 
+                               Margin="0,0,0,10"/>
+                    <ListView x:Name="PreviewListBox" 
+                              Height="200"
+                              BorderThickness="0"
+                              ScrollViewer.VerticalScrollBarVisibility="Auto">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Margin="0,5">
+                                    <materialDesign:PackIcon Kind="CodeBlockJson" 
+                                                             Width="24" 
+                                                             Height="24" 
+                                                             Foreground="{DynamicResource MaterialDesignPrimary}" 
+                                                             Margin="0,0,10,0"/>
+                                    <TextBlock Text="{Binding}" 
+                                               FontSize="16" 
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+            </materialDesign:Card>
+        </StackPanel>
+        
+        <!-- Convert Button -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,20">
+            <Button x:Name="ConvertButton" 
+                    Width="150" 
+                    Height="45"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    Click="ConvertButton_Click" 
+                    Visibility="Collapsed">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <materialDesign:PackIcon Kind="CloudUpload" 
+                                                 Width="24" 
+                                                 Height="24" 
+                                                 Margin="0,0,10,0"/>
+                        <TextBlock Text="Convert" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+        </StackPanel>
+
+        <!-- Snackbar for Notifications -->
+        <materialDesign:Snackbar Grid.Row="3" 
+                                 MessageQueue="{Binding SnackbarMessageQueue}" 
+                                 VerticalAlignment="Bottom" 
+                                 Margin="20"/>
+    </Grid>
+</Window>
