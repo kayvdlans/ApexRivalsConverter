@@ -1,4 +1,4 @@
-name: Build & Release
+name: Release
 
 on: 
   push:
@@ -21,10 +21,10 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Restore NuGet Packages
-        run: dotnet restore ApexRivalsConverter.sln
+        run: dotnet restore AMS2ToApexRivals.sln
 
       - name: Build
-        run: dotnet build ApexRivalsConverter.sln --configuration Release --no-restore
+        run: dotnet build AMS2ToApexRivals.sln --configuration Release --no-restore
 
       - name: Publish
         run: dotnet publish AMS2TARApp/AMS2TARApp.csproj --configuration Release --output ./publish
@@ -48,8 +48,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./publish/ApexRivalsConverter.exe
-          asset_name: ApexRivalsConverter.exe
+          asset_path: ./publish/AMS2ToApexRivals.exe
+          asset_name: AMS2ToApexRivals.exe
           asset_content_type: application/octet-stream
 
 
