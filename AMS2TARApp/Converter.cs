@@ -1,10 +1,11 @@
 using System.IO;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 namespace AMS2ToApexRivals;
 
-public class Converter(string inputPath, string outputDir, string defaultValue = "Random")
+public partial class Converter(string inputPath, string outputDir, string defaultValue = "Random")
 {
 	public void Convert() 
 	{
@@ -12,7 +13,10 @@ public class Converter(string inputPath, string outputDir, string defaultValue =
 
 		Directory.CreateDirectory(outputDir);
 
-		var root = XElement.Load(inputPath);
+		var xmlContent = File.ReadAllText(inputPath);
+        var fixedXmlContent = FixInvalidComments(xmlContent);
+        
+		var root = XElement.Parse(fixedXmlContent);
 		foreach (var driver in root.Elements("driver")) 
 		{ 
 			var name = driver.Element("name")?.Value ?? "Error";
@@ -58,4 +62,10 @@ public class Converter(string inputPath, string outputDir, string defaultValue =
 	{
 		return root.Element(element)?.Value ?? defaultValue;
 	}
+
+	private string FixInvalidComments(string xml) => CommentRegex().Replace(xml, new MatchEvaluator(ReplaceInvalidCommentContent));
+	private string ReplaceInvalidCommentContent(Match match) => $"<!--{match.Groups[1].Value.Replace("--", "")}-->";
+	
+	[GeneratedRegex(@"<!--(.*?)-->", RegexOptions.Singleline)]
+	private static partial Regex CommentRegex();
 }
