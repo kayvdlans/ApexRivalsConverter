@@ -44,14 +44,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            ./publish/AMS2TARApp.exe
-            ./publish/AMS2TARApp.deps
-            ./publish/AMS2TARApp.dll
-            ./publish/AMS2TARApp.pdb
-            ./publish/AMS2TARApp.runtimeconfig
-            ./publish/MaterialDesignColors.dll
-            ./publish/MaterialDesignThemes.Wpf.dll
-            ./publish/Microsoft.Xaml.Behaviors.dll
             ./publish/AMS2ToApexRivals.zip 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
