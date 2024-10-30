@@ -7,17 +7,29 @@ namespace AMS2ToApexRivals;
 
 public partial class Converter(string inputPath, string outputDir, string defaultValue = "Random")
 {
+	private XElement? _root;
+	
+	public XElement GetXmlRoot()
+	{
+		if (_root != null)
+		{
+			return _root;
+		}
+		
+		var xmlContent = File.ReadAllText(inputPath);
+		var fixedXmlContent = FixInvalidComments(xmlContent);
+        
+		_root = XElement.Parse(fixedXmlContent);
+		return _root;
+	}
+	
 	public void Convert() 
 	{
 		var options = new JsonSerializerOptions { WriteIndented = true };
 
 		Directory.CreateDirectory(outputDir);
-
-		var xmlContent = File.ReadAllText(inputPath);
-        var fixedXmlContent = FixInvalidComments(xmlContent);
-        
-		var root = XElement.Parse(fixedXmlContent);
-		foreach (var driver in root.Elements("driver")) 
+		
+		foreach (var driver in GetXmlRoot().Elements("driver")) 
 		{ 
 			var name = driver.Element("name")?.Value ?? "Error";
             var country = driver.Element("country")?.Value ?? "Random";
@@ -55,7 +67,6 @@ public partial class Converter(string inputPath, string outputDir, string defaul
 			File.WriteAllText(outputPath, jsonOutput);
 			Console.WriteLine($"Saved JSON for {name} at {outputPath}");
 		}
-
 	}
 
 	private string GetValueOrDefault(XElement root, string element) 
@@ -63,8 +74,8 @@ public partial class Converter(string inputPath, string outputDir, string defaul
 		return root.Element(element)?.Value ?? defaultValue;
 	}
 
-	private string FixInvalidComments(string xml) => CommentRegex().Replace(xml, new MatchEvaluator(ReplaceInvalidCommentContent));
-	private string ReplaceInvalidCommentContent(Match match) => $"<!--{match.Groups[1].Value.Replace("--", "")}-->";
+	private static string FixInvalidComments(string xml) => CommentRegex().Replace(xml, ReplaceInvalidCommentContent);
+	private static string ReplaceInvalidCommentContent(Match match) => $"<!--{match.Groups[1].Value.Replace("--", "")}-->";
 	
 	[GeneratedRegex(@"<!--(.*?)-->", RegexOptions.Singleline)]
 	private static partial Regex CommentRegex();

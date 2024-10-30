@@ -17,6 +17,7 @@ public partial class MainWindow : INotifyPropertyChanged
         "Rivals",
         "Generated");
 
+    private Converter _converter = new(string.Empty, string.Empty);
     private string _xmlFilePath = string.Empty;
 
     public SnackbarMessageQueue SnackbarMessageQueue { get; }
@@ -78,11 +79,11 @@ public partial class MainWindow : INotifyPropertyChanged
     {
         try
         {
-            var root = XElement.Load(_xmlFilePath);
+            _converter = new Converter(_xmlFilePath, OutputDir);
 
             PreviewListBox.Items.Clear();
 
-            foreach (var driver in root.Elements("driver"))
+            foreach (var driver in _converter.GetXmlRoot().Elements("driver"))
             {
                 var name = driver.Element("name")?.Value ?? "Error";
                 var outputPath = Path.Combine(OutputDir, name, $"{name}.json");
@@ -101,7 +102,7 @@ public partial class MainWindow : INotifyPropertyChanged
     {
         try
         {
-            new Converter(_xmlFilePath, OutputDir).Convert();
+            _converter.Convert();
 
             SnackbarMessageQueue.Enqueue("Conversion completed successfully!");
         }
