@@ -55,7 +55,7 @@ public partial class Converter(string inputPath, string outputDir, string defaul
 			var json = new 
 			{
 				Name = name,
-				Country = country,
+				Nationality = country,
 				AMS2 = ams2,
 				AC = new { Strength = "Random", Aggressivity = "Random" }
 			};
